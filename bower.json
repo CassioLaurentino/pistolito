@@ -1,0 +1,17 @@
+{
+  "name": "pistolito",
+  "description": "webserver",
+  "main": "public/js/index.js",
+  "authors": [
+    "CassioLaurentino"
+  ],
+  "license": "ISC",
+  "homepage": "public/html/index.html",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ]
+}
