@@ -27,31 +27,14 @@ http.listen(8080, function(){
 });
 
 io.on("connection", (socket) => {
-  console.log('connectou');
-  socket.on("hello", function(msg){
-    socket.emit("hello-return", msg);
-  });
-
   socket.on("statusTs3", function(data){
     data = statusTs3()
     socket.emit("statusTs3", data)
   });
-
-  // socket.on('statusReqTs3', function(data) {  
-  //   socket.emit('statusResTs3', { hello: statusTs3() });
-  // });
-  
-  // socket.on('statusReqTs3', function (data) {  
-  //     startTs3();
-  // });
-  
-  // socket.on('stopReqTs3', function (data) {  
-  //     stopTs3();
-  // });
 });
 
 function statusTs3() {
-  shell.exec("ls")
+  return shell.exec("systemctl status ts3server | grep -o running")
 }
 
 // function statusTs3() {
