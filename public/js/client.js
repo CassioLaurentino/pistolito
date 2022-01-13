@@ -1,4 +1,4 @@
-const socket = io("ws://localhost");
+const socket = io("pistolito.com.br:8080");
 
 $(document).ready(function stats() {
     connectAndEmit("hello", "teste")
