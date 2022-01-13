@@ -1,4 +1,4 @@
-const socket = io("ws://localhost:3000");
+const socket = io("ws://localhost");
 
 $(document).ready(function stats() {
     connectAndEmit("hello", "teste")
@@ -11,7 +11,7 @@ $(document).ready(function stats() {
 
         socket.on("statusTs3", function(data) {
             console.log("ts3 status : " + data)
-            updateStatus("#ts3_status" + data)
+            updateStatus("#ts3_status", data)
         });
     })
 
@@ -33,13 +33,13 @@ function connectAndEmit(trigger, arg) {
 
 function updateStatus(field, status) {
     if (status == "Server is running") {
-        $(field).text("Running");
-        $(ts3_start).toggle(true);
-        $(ts3_stop).toggle(false);
-    } else {
-        $(field).text("Stopped");
+        $(field).text("Running").css('color', 'green');;
         $(ts3_start).toggle(false);
         $(ts3_stop).toggle(true);
+    } else {
+        $(field).text("Stopped").css('color', 'red');
+        $(ts3_start).toggle(true);
+        $(ts3_stop).toggle(false);
     }
 }
 

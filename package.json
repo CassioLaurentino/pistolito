@@ -9,7 +9,7 @@
   "author": "CassioLaurentino",
   "license": "ISC",
   "dependencies": {
-    "express": "^4.17.1",
+    "express": "^4.17.2",
     "shelljs": "^0.8.4",
     "socket.io": "^4.0.0",
     "socket.io-client": "^4.0.0"

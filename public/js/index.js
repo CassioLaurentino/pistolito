@@ -22,8 +22,8 @@ app.get('/servers', (req, res) => {
   res.sendFile(path.resolve('public/html/servers.html'));
 });
 
-http.listen(3000, function(){
-  console.log('listening on port 3000');
+http.listen(8080, function(){
+  console.log('listening on port 8080');
 });
 
 io.on("connection", (socket) => {
@@ -57,6 +57,10 @@ function statusTs3() {
 // function statusTs3() {
 //   shell.exec("./home/ec2-user/ts3/ts3server_startscript.sh status")
 // }
+
+function startTs3() {
+  shell.exec("ip a")
+}
 
 // function startTs3() {
 //   shell.exec("./home/ec2-user/ts3/ts3server_startscript.sh start")
