@@ -5,13 +5,6 @@ var path = require('path');
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
 
-// var io = require("socket.io")(http, {
-//   path: "public/socket.io-client/",
-//   cors: {
-//     methods: ["GET", "POST"]
-//   }
-// });
-
 app.use(express.static("public"));
 
 app.get('/', (req, res) => {
@@ -27,35 +20,61 @@ http.listen(8080, function(){
 });
 
 io.on("connection", (socket) => {
-  socket.on("statusTs3", function(data){
+  socket.once("statusTs3", function(data){
     data = statusTs3()
     socket.emit("statusTs3", data)
   });
+  // socket.on("startTs3", function(data){
+  //   data = startTs3()
+  //   socket.emit("startTs3", data)
+  // });
+  // socket.on("stopTs3", function(data){
+  //   data = stopTs3()
+  //   socket.emit("stopTs3", data)
+  // });
+
+  //minecraft
+  socket.once("statusMinecraft", function(data){
+    data = statusMinecraft()
+    socket.emit("statusMinecraft", data)
+  });
+
+  socket.once("startMinecraft", function(data){
+    data = startMinecraft()
+    socket.emit("startMinecraft", data)
+  });
+  
+  socket.once("stopMinecraft", function(data){
+    data = stopMinecraft()
+    socket.emit("stopMinecraft", data)
+  });
 });
 
+//ts3
 function statusTs3() {
   return shell.exec("systemctl status ts3server | grep -o running")
 }
 
-// function statusTs3() {
-//   shell.exec("./home/ec2-user/ts3/ts3server_startscript.sh status")
-// }
-
 function startTs3() {
-  shell.exec("ip a")
+  return shell.exec("systemctl status ts3server | grep -o running")
 }
 
-// function startTs3() {
-//   shell.exec("./home/ec2-user/ts3/ts3server_startscript.sh start")
-// }
+function stopTs3() {
+  return shell.exec("systemctl status ts3server | grep -o running")
+}
 
-// function stopTs3() {
-//   shell.exec("./home/ec2-user/ts3/ts3server_startscript.sh stop")
-// }
+//minecraft
+function statusMinecraft() {
+  return shell.exec("ps aux | grep '[j]ava' | grep -o minecraft").trim() == "minecraft" ? "running" : "stopped";
+}
 
-// --------------
+function startMinecraft() {
+  shell.cd('/home/pistolito/games/minecraft');
+  shell.exec('nohup java -Xmx2048M -Xms2048M -jar minecraft_server.1.18.1.jar nogui &');
+  shell.cd('/home/pistolito');
+  return statusMinecraft();
+}
 
-// mine
-// alias start_mine='cd mine_server && nohup java -Xmx4096M -Xms4096M -jar server.jar nogui &'
-// alias stop_mine='kill $(ps aux | grep "[j]ava" | awk "{print $2}")'
-// alias check_mine='ps aux | grep "[j]ava"'
+function stopMinecraft() {
+  return shell.exec("kill $(ps aux | grep '[j]ava' | awk '{print $2}')")
+}
